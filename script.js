@@ -183,3 +183,46 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('✨ Сайт косметолога Рады Бурнаевой загружен!');
     console.log('💡 Для отправки формы настройте бэкенд или интеграцию с Telegram');
 });
+
+// 🎯 Аккордеон для вопросов
+document.addEventListener('DOMContentLoaded', () => {
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
+    
+    accordionHeaders.forEach(header => {
+        header.addEventListener('click', () => {
+            const content = header.nextElementSibling;
+            const isActive = header.classList.contains('active');
+            
+            // Закрываем все открытые
+            accordionHeaders.forEach(h => h.classList.remove('active'));
+            document.querySelectorAll('.accordion-content').forEach(c => c.classList.remove('show'));
+            
+            // Открываем текущий (если был закрыт)
+            if (!isActive) {
+                header.classList.add('active');
+                content.classList.add('show');
+                
+                // Плавная прокрутка к открытому вопросу
+                setTimeout(() => {
+                    const elementPosition = header.getBoundingClientRect().top + window.pageYOffset;
+                    const offsetPosition = elementPosition - 100;
+                    
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }, 350);
+            }
+        });
+    });
+    
+    // Автооткрытие вопроса из ссылки (например: #faq?question=3)
+    const urlParams = new URLSearchParams(window.location.search);
+    const questionParam = urlParams.get('question');
+    
+    if (questionParam && accordionHeaders[questionParam - 1]) {
+        setTimeout(() => {
+            accordionHeaders[questionParam - 1].click();
+        }, 500);
+    }
+});    

@@ -314,6 +314,71 @@ body {
     box-shadow: var(--shadow);
 }
 
+/* 🌟 Почему выбирают меня */
+.why-me {
+    padding: 100px 0;
+    background: var(--white);
+}
+
+.why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.why-card {
+    text-align: center;
+    padding: 40px 30px;
+    background: linear-gradient(135deg, #fff5f7 0%, #f8f9ff 100%);
+    border-radius: var(--radius);
+    transition: var(--transition);
+    border: 2px solid transparent;
+}
+
+.why-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--primary);
+    box-shadow: var(--shadow-hover);
+}
+
+.why-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.why-card h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 15px;
+}
+
+.why-card p {
+    color: var(--gray);
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+/* 📱 Адаптивность */
+@media (max-width: 768px) {
+    .why-me {
+        padding: 60px 0;
+    }
+    
+    .why-card {
+        padding: 30px 20px;
+    }
+    
+    .why-icon {
+        font-size: 40px;
+    }
+    
+    .why-card h3 {
+        font-size: 20px;
+    }
+}
+
 /* 📋 Услуги */
 .services {
     padding: 100px 0;
@@ -2392,5 +2457,177 @@ html, body {
     
     .gallery-item {
         aspect-ratio: 3/3 !important;
+    }
+}
+
+/* .faq {
+    padding: 100px 0;
+    background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+}
+
+.faq-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-top: 40px;
+}
+
+.faq-item {
+    background: white;
+    border-radius: var(--radius);
+    padding: 30px;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.faq-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+}
+
+.faq-question {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.faq-icon {
+    font-size: 32px;
+}
+
+.faq-question h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--dark);
+}
+
+.faq-answer {
+    color: var(--gray);
+    line-height: 1.8;
+    font-size: 16px;
+} */
+
+/* 🙋‍♀️ Часто задаваемые вопросы (Аккордеон) */
+.faq {
+    padding: 100px 0;
+    background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+}
+
+.accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 40px 0;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.accordion-item {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.accordion-item:hover {
+    box-shadow: var(--shadow-hover);
+}
+
+.accordion-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    padding: 25px 30px;
+    background: white;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--dark);
+    transition: var(--transition);
+    position: relative;
+}
+
+.accordion-header:hover {
+    background: #fff5f7;
+}
+
+.accordion-header::after {
+    content: '+';
+    position: absolute;
+    right: 30px;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--primary);
+    transition: var(--transition);
+}
+
+.accordion-header.active::after {
+    content: '−';
+    font-size: 36px;
+    font-weight: 700;
+}
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.35s ease;
+    background: #fafbff;
+}
+
+.accordion-content.show {
+    max-height: 500px;
+    padding: 0 30px 25px;
+}
+
+.accordion-content p {
+    color: var(--gray);
+    line-height: 1.8;
+    font-size: 16px;
+    margin: 0;
+}
+
+/* 📱 Адаптивность */
+@media (max-width: 768px) {
+    .faq {
+        padding: 60px 0;
+    }
+    
+    .accordion {
+        margin: 30px 0;
+    }
+    
+    .accordion-header {
+        padding: 20px 25px;
+        font-size: 17px;
+    }
+    
+    .accordion-header::after {
+        right: 25px;
+    }
+    
+    .accordion-content.show {
+        padding: 0 25px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .accordion-header {
+        padding: 18px 20px;
+        font-size: 16px;
+    }
+    
+    .accordion-header::after {
+        right: 20px;
+        font-size: 24px;
+    }
+    
+    .accordion-content.show {
+        padding: 0 20px 18px;
     }
 }
