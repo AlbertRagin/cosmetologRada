@@ -2631,3 +2631,157 @@ html, body {
         padding: 0 20px 18px;
     }
 }
+
+/* 📞 Кнопка телефона в шапке */
+.btn-call {
+    background: linear-gradient(135deg, #28a745, #20c997) !important;
+    color: white !important;
+    padding: 8px 20px !important;
+    border-radius: 30px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3) !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    border: none !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-call:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4) !important;
+    color: white !important;
+    text-decoration: none !important;
+}
+
+/* Адаптация для мобильного меню */
+@media (max-width: 768px) {
+    .btn-call {
+        width: 100% !important;
+        justify-content: center !important;
+        margin-bottom: 10px !important;
+        font-size: 18px !important;
+        padding: 14px !important;
+    }
+    
+    /* Кнопка записи на мобильных */
+    .nav-list .btn-primary {
+        width: 100% !important;
+        justify-content: center !important;
+        font-size: 18px !important;
+        padding: 14px !important;
+    }
+}
+
+/* 📞 Плавающая кнопка телефона */
+.phone-float {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 65px;
+    height: 65px;
+    background: linear-gradient(135deg, #28a745, #20c997);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+    z-index: 9999;
+    text-decoration: none !important;
+    animation: pulse 2s infinite;
+    display: none; /* Скрыта на десктопе */
+}
+
+.phone-icon {
+    font-size: 32px;
+    color: white;
+}
+
+/* Показываем только на мобильных */
+@media (max-width: 768px) {
+    .phone-float {
+        display: flex;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.4); }
+    50% { box-shadow: 0 0 0 15px rgba(40, 167, 69, 0); }
+}
+
+/* 📞 Плавающие кнопки (телефон + телеграм) */
+.floating-buttons {
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 9999;
+    pointer-events: none; /* Чтобы не мешала скроллу */
+}
+
+.float-btn {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    z-index: 10000;
+    pointer-events: auto; /* Восстанавливаем кликабельность */
+    transition: all 0.3s ease;
+    animation: floatPulse 2s infinite;
+}
+
+/* Телефон — зелёный (справа) */
+.float-btn-phone {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    margin-left: auto; /* Прижимаем к правому краю */
+}
+
+/* Телеграм — синий (слева) */
+.float-btn-telegram {
+    background: linear-gradient(135deg, #0088cc, #00bfff);
+    margin-right: auto; /* Прижимаем к левому краю */
+}
+
+.float-icon {
+    font-size: 30px;
+    color: white;
+}
+
+/* Эффект при наведении */
+.float-btn:hover {
+    transform: scale(1.1) translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+}
+
+/* Анимация пульсации */
+@keyframes floatPulse {
+    0%, 100% { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25); }
+    50% { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4); }
+}
+
+/* Скрыть на десктопе (ширина > 1024px) */
+@media (min-width: 1025px) {
+    .floating-buttons {
+        display: none;
+    }
+}
+
+/* Адаптация для очень узких экранов */
+@media (max-width: 360px) {
+    .float-btn {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .float-icon {
+        font-size: 28px;
+    }
+}
