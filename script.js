@@ -73,8 +73,8 @@ window.addEventListener('scroll', () => {
 
 // 📱 Валидация и отправка формы
 // const appointmentForm = document.getElementById('appointmentForm');
-const formLoader = document.getElementById('formLoader');
-const formSuccess = document.getElementById('formSuccess');
+// const formLoader = document.getElementById('formLoader');
+// const formSuccess = document.getElementById('formSuccess');
 
 // if (appointmentForm) {
 //     appointmentForm.addEventListener('submit', async (e) => {
