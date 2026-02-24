@@ -72,62 +72,146 @@ window.addEventListener('scroll', () => {
 });
 
 // 📱 Валидация и отправка формы
-const appointmentForm = document.getElementById('appointmentForm');
+// const appointmentForm = document.getElementById('appointmentForm');
 const formLoader = document.getElementById('formLoader');
 const formSuccess = document.getElementById('formSuccess');
 
+// if (appointmentForm) {
+//     appointmentForm.addEventListener('submit', async (e) => {
+//         e.preventDefault();
+        
+//         // Валидация телефона (простая)
+//         const phone = document.getElementById('phone').value;
+//         const phonePattern = /^\+7\s?\(?\d{3}\)?\s?\d{3}-?\d{2}-?\d{2}$/;
+        
+//         if (!phonePattern.test(phone.replace(/\s/g, ''))) {
+//             alert('Пожалуйста, введите корректный номер телефона');
+//             return;
+//         }
+        
+//         // Показать лоадер
+//         const submitBtn = appointmentForm.querySelector('button[type="submit"]');
+//         submitBtn.classList.add('loading');
+        
+//         try {
+//             // Здесь будет ваш код отправки формы
+//             // Например, отправка на Telegram бота или на сервер
+            
+//             // Имитация отправки (удалите этот setTimeout в продакшене)
+//             await new Promise(resolve => setTimeout(resolve, 2000));
+            
+//             // Показать сообщение об успехе
+//             formSuccess.style.display = 'block';
+//             appointmentForm.reset();
+            
+//             // Скрыть лоадер
+//             submitBtn.classList.remove('loading');
+            
+//             // Скрыть сообщение через 5 секунд
+//             setTimeout(() => {
+//                 formSuccess.style.display = 'none';
+//             }, 5000);
+            
+//             // Отправить данные в консоль (для тестирования)
+//             console.log('Форма отправлена:', {
+//                 name: document.getElementById('name').value,
+//                 phone: document.getElementById('phone').value,
+//                 city: document.getElementById('city').value,
+//                 service: document.getElementById('service').value,
+//                 message: document.getElementById('message').value
+//             });
+            
+//         } catch (error) {
+//             console.error('Ошибка отправки формы:', error);
+//             alert('Произошла ошибка при отправке заявки. Попробуйте снова.');
+//             submitBtn.classList.remove('loading');
+//         }
+//     });
+
+// 📩 Отправка формы в Telegram
+const appointmentForm = document.getElementById('appointmentForm');
+
 if (appointmentForm) {
-    appointmentForm.addEventListener('submit', async (e) => {
+    // Слушаем событие отправки формы
+    appointmentForm.addEventListener('submit', async function(e) {
+        // Предотвращаем стандартную отправку формы
         e.preventDefault();
         
-        // Валидация телефона (простая)
-        const phone = document.getElementById('phone').value;
-        const phonePattern = /^\+7\s?\(?\d{3}\)?\s?\d{3}-?\d{2}-?\d{2}$/;
+        // Получаем кнопку отправки и сообщение об успехе
+        const submitBtn = appointmentForm.querySelector('button[type="submit"]');
+        const formSuccess = document.getElementById('formSuccess');
         
-        if (!phonePattern.test(phone.replace(/\s/g, ''))) {
+        // Валидация телефона
+        // Получаем значение поля телефона
+        const phoneInput = document.getElementById('phone');
+        const phone = phoneInput.value;
+        
+        // Регулярное выражение для проверки формата: +7 (999) 999-99-99
+        // ^ - начало строки
+        // \+7 - символ +7
+        // \(\d{3}\) - три цифры в скобках
+        // \d{3}-\d{2}-\d{2} - три цифры, тире, две цифры, тире, две цифры
+        // $ - конец строки
+        const phonePattern = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
+        
+        // Проверяем, соответствует ли телефон шаблону
+        if (!phonePattern.test(phone)) {
             alert('Пожалуйста, введите корректный номер телефона');
-            return;
+            phoneInput.focus(); // Устанавливаем фокус на поле телефона
+            return; // Прерываем выполнение функции
         }
         
-        // Показать лоадер
-        const submitBtn = appointmentForm.querySelector('button[type="submit"]');
-        submitBtn.classList.add('loading');
+        // Собираем данные из формы в объект FormData
+        // FormData автоматически собирает все поля формы с атрибутом name
+        const formData = new FormData(appointmentForm);
         
+        // Показать лоадер на кнопке
+        submitBtn.classList.add('loading');
+        submitBtn.disabled = true; // Блокируем кнопку, чтобы нельзя было отправить дважды
+        
+        // Пытаемся отправить данные
         try {
-            // Здесь будет ваш код отправки формы
-            // Например, отправка на Telegram бота или на сервер
-            
-            // Имитация отправки (удалите этот setTimeout в продакшене)
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            
-            // Показать сообщение об успехе
-            formSuccess.style.display = 'block';
-            appointmentForm.reset();
-            
-            // Скрыть лоадер
-            submitBtn.classList.remove('loading');
-            
-            // Скрыть сообщение через 5 секунд
-            setTimeout(() => {
-                formSuccess.style.display = 'none';
-            }, 5000);
-            
-            // Отправить данные в консоль (для тестирования)
-            console.log('Форма отправлена:', {
-                name: document.getElementById('name').value,
-                phone: document.getElementById('phone').value,
-                city: document.getElementById('city').value,
-                service: document.getElementById('service').value,
-                message: document.getElementById('message').value
+            // Отправляем запрос на сервер (файл telegram.php)
+            const response = await fetch('telegram.php', {
+                method: 'POST',           // Метод отправки: POST
+                body: formData            // Тело запроса: данные формы
             });
             
+            // Ждём ответ от сервера и парсим его как JSON
+            const result = await response.json();
+            
+            // Проверяем, успешная ли отправка
+            if (result.success) {
+                // Показываем сообщение об успехе
+                formSuccess.style.display = 'block';
+                formSuccess.textContent = result.message || 'Заявка отправлена! Я свяжусь с вами в течение 2 часов.';
+                
+                // Очищаем форму
+                appointmentForm.reset();
+                
+                // Скрываем сообщение об успехе через 5 секунд
+                setTimeout(() => {
+                    formSuccess.style.display = 'none';
+                }, 5000);
+            } else {
+                // Если сервер вернул ошибку
+                alert(result.message || 'Произошла ошибка. Попробуйте снова.');
+            }
+            
         } catch (error) {
-            console.error('Ошибка отправки формы:', error);
-            alert('Произошла ошибка при отправке заявки. Попробуйте снова.');
+            // Если произошла ошибка при отправке (нет интернета, сервер не отвечает и т.д.)
+            console.error('Ошибка отправки:', error);
+            
+            // Показываем пользователю понятное сообщение
+            alert('Ошибка подключения. Попробуйте снова или позвоните: +7 (917) 289-16-33');
+        } finally {
+            // В любом случае (успех или ошибка) убираем лоадер
             submitBtn.classList.remove('loading');
+            submitBtn.disabled = false; // Разблокируем кнопку
         }
     });
 }
+
 
 // 📱 Маска для телефона
 // const phoneInput = document.getElementById('phone');
