@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://cosmetolog-rada.ru/sitemap.xml

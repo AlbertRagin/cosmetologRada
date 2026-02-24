@@ -130,28 +130,95 @@ if (appointmentForm) {
 }
 
 // 📱 Маска для телефона
-const phoneInput = document.getElementById('phone');
+// const phoneInput = document.getElementById('phone');
 
-if (phoneInput) {
-    phoneInput.addEventListener('input', function (e) {
+// if (phoneInput) {
+//     phoneInput.addEventListener('input', function (e) {
+//         let value = e.target.value.replace(/\D/g, '');
+        
+//         if (value.length > 0) {
+//             value = '+7 (' + value;
+//         }
+//         if (value.length > 4) {
+//             value = value.slice(0, 4) + ') ' + value.slice(4);
+//         }
+//         if (value.length > 9) {
+//             value = value.slice(0, 9) + '-' + value.slice(9);
+//         }
+//         if (value.length > 12) {
+//             value = value.slice(0, 12) + '-' + value.slice(12);
+//         }
+        
+//         e.target.value = value.slice(0, 18);
+//     });
+// }
+
+// 📱 Маска для телефона (исправленная)
+
+// 📱 Маска телефона (гарантированно рабочая)
+document.addEventListener('DOMContentLoaded', function() {
+    const phoneInput = document.getElementById('phone');
+    
+    if (!phoneInput) return;
+    
+    // Форматирование при вводе
+    phoneInput.addEventListener('input', function(e) {
+        // Сохраняем позицию курсора
+        const selectionStart = e.target.selectionStart;
+        
+        // Убираем всё кроме цифр
         let value = e.target.value.replace(/\D/g, '');
         
-        if (value.length > 0) {
-            value = '+7 (' + value;
-        }
-        if (value.length > 4) {
-            value = value.slice(0, 4) + ') ' + value.slice(4);
-        }
-        if (value.length > 9) {
-            value = value.slice(0, 9) + '-' + value.slice(9);
-        }
-        if (value.length > 12) {
-            value = value.slice(0, 12) + '-' + value.slice(12);
+        // Ограничиваем до 11 цифр (7 + 10 цифр)
+        if (value.length > 11) {
+            value = value.slice(0, 11);
         }
         
-        e.target.value = value.slice(0, 18);
+        // Форматируем
+        let formatted = '+7';
+        
+        if (value.length > 1) {
+            formatted += ' (' + value.substring(1, 4);
+        }
+        if (value.length >= 4) {
+            formatted += ') ' + value.substring(4, 7);
+        }
+        if (value.length >= 7) {
+            formatted += '-' + value.substring(7, 9);
+        }
+        if (value.length >= 9) {
+            formatted += '-' + value.substring(9, 11);
+        }
+        
+        // Устанавливаем значение
+        e.target.value = formatted;
+        
+        // Восстанавливаем позицию курсора (простой вариант)
+        setTimeout(() => {
+            e.target.selectionStart = e.target.selectionEnd = formatted.length;
+        }, 0);
     });
-}
+    
+    // Валидация при потере фокуса
+    phoneInput.addEventListener('blur', function() {
+        const isValid = this.value.length === 18; // +7 (XXX) XXX-XX-XX = 18 символов
+        
+        if (this.value && !isValid) {
+            this.style.borderColor = '#ff4444';
+            this.style.boxShadow = '0 0 0 3px rgba(255, 68, 68, 0.2)';
+        } else {
+            this.style.borderColor = '';
+            this.style.boxShadow = '';
+        }
+    });
+    
+    // Сброс стилей при фокусе
+    phoneInput.addEventListener('focus', function() {
+        this.style.borderColor = '';
+        this.style.boxShadow = '';
+    });
+});
+
 
 // 📱 Анимация при скролле (появление элементов)
 const animateOnScroll = () => {
