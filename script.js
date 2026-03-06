@@ -377,3 +377,53 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 500);
     }
 });    
+
+// Обработка формы с отправкой в телеграм
+document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const form = this;
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const successMsg = document.getElementById('formSuccess');
+    
+    // Блокируем кнопку
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Отправка...';
+    
+    // Собираем данные
+    const formData = new FormData(form);
+    
+    // Отправляем запрос
+    fetch('/telegram.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Очищаем форму
+            form.reset();
+            
+            // Показываем сообщение
+            successMsg.style.display = 'block';
+            successMsg.textContent = data.message;
+            
+            // Скрываем сообщение через 5 секунд
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+            }, 5000);
+        } else {
+            alert(data.message);
+        }
+        
+        // Разблокируем кнопку
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Отправить заявку';
+    })
+    .catch(error => {
+        console.error('Ошибка:', error);
+        alert('Ошибка отправки. Попробуйте позвонить: +7 (917) 289-16-33');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Отправить заявку';
+    });
+});
